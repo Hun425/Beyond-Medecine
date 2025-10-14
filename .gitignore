@@ -25,3 +25,6 @@ replay_pid*
 
 # Kotlin Gradle plugin data, see https://kotlinlang.org/docs/whatsnew20.html#new-directory-for-kotlin-data-in-gradle-projects
 .kotlin/
+.idea
+docs/비욘드_메디슨_백엔드_개발자_채용_과제.pdf
+docs/faq.md
