@@ -25,4 +25,21 @@ class PrescriptionCalculatorTest {
         // then
         assertEquals(PrescriptionStatus.PENDING, status)
     }
+
+    @Test
+    @DisplayName("활성화 후 42일 이내면 ACTIVE 상태다")
+    fun calculateStatus_WithinActiveWeeks_ReturnsActive() {
+        // given
+        val createdAt = LocalDateTime.of(2025, 9, 25, 10, 0)
+        val activatedAt = LocalDateTime.of(2025, 10, 1, 9, 0)
+        val currentTime = LocalDateTime.of(2025, 10, 15, 10, 0)  // 14일 후
+
+        // when
+        val status = PrescriptionCalculator.calculateStatus(
+            createdAt, activatedAt, currentTime
+        )
+
+        // then
+        assertEquals(PrescriptionStatus.ACTIVE, status)
+    }
 }
