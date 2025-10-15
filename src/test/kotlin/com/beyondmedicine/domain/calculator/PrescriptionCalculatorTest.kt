@@ -76,4 +76,21 @@ class PrescriptionCalculatorTest {
         // then
         assertEquals(PrescriptionStatus.COMPLETED, status)
     }
+
+    @Test
+    @DisplayName("생성 후 6주 경과하고 활성화하지 않으면 EXPIRED 상태다")
+    fun calculateStatus_NotActivatedAfter6Weeks_ReturnsExpired() {
+        // given
+        val createdAt = LocalDateTime.of(2025, 10, 1, 10, 0)
+        val activatedAt = null
+        val currentTime = LocalDateTime.of(2025, 11, 13, 10, 0)  // 6주 + 1일 후
+
+        // when
+        val status = PrescriptionCalculator.calculateStatus(
+            createdAt, activatedAt, currentTime
+        )
+
+        // then
+        assertEquals(PrescriptionStatus.EXPIRED, status)
+    }
 }
