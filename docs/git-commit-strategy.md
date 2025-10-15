@@ -3,7 +3,44 @@
 ## TDD 커밋 전략 개요
 
 TDD의 Red-Green-Refactor 사이클을 Git 커밋 히스토리로 명확히 기록합니다.
-각 사이클마다 3~4번의 커밋이 발생하며, 이를 통해 TDD 과정을 추적 가능하게 만듭니다.
+각 사이클마다 2~3번의 커밋이 발생하며, 이를 통해 TDD 과정을 추적 가능하게 만듭니다.
+
+---
+
+## 실제 적용 중인 커밋 방식 (2025-10)
+
+### 커밋 메시지 형식
+```
+<type>(<scope>): 한국어 간략 설명
+```
+
+**중요:**
+- **커밋 메시지는 한국어로 작성** (팀 내부 프로젝트)
+- Type과 Scope는 영어 유지 (표준 컨벤션)
+- 간결하고 명확하게 작성
+
+### 실제 커밋 예시
+```bash
+test(calculator): PENDING 상태 계산 테스트 추가
+feat(calculator): PENDING 상태 계산 구현
+refactor(calculator): 함수 분리로 가독성 개선
+docs: Phase 1.1 진행 상황 업데이트
+```
+
+---
+
+## 진행 방식
+
+### Phase 단위로 작업 및 보고
+1. **Phase 시작**: Phase 내 모든 Iteration TDD 사이클 진행
+2. **각 사이클마다 커밋**: 🔴 RED → 🟢 GREEN → (🔵 REFACTOR 필요시)
+3. **Phase 완료 시 보고**: 구현 완료 내역 및 테스트 현황 요약
+
+### 커밋 주기
+- 🔴 RED 완료 시: 테스트 추가 커밋
+- 🟢 GREEN 완료 시: 구현 커밋
+- 🔵 REFACTOR 완료 시: 리팩토링 커밋 (필요시)
+- 📝 Phase 완료 시: 문서 업데이트 커밋
 
 ---
 
@@ -11,9 +48,7 @@ TDD의 Red-Green-Refactor 사이클을 Git 커밋 히스토리로 명확히 기�
 
 ### 기본 형식
 ```
-<type>(<scope>): <subject>
-
-[optional body]
+<type>(<scope>): 한국어 간략 설명
 ```
 
 ### Type 분류
