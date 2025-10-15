@@ -6,6 +6,7 @@ import java.time.LocalDateTime
 object PrescriptionCalculator {
 
     private const val ACTIVE_PERIOD_DAYS = 42L
+    private const val EXPIRATION_WEEKS = 6L
 
     fun calculateStatus(
         createdAt: LocalDateTime,
@@ -13,7 +14,7 @@ object PrescriptionCalculator {
         currentTime: LocalDateTime
     ): PrescriptionStatus = when {
         activatedAt != null -> calculateActivatedStatus(activatedAt, currentTime)
-        else -> PrescriptionStatus.PENDING
+        else -> calculateNotActivatedStatus(createdAt, currentTime)
     }
 
     private fun calculateActivatedStatus(
@@ -36,5 +37,17 @@ object PrescriptionCalculator {
             .withMinute(59)
             .withSecond(59)
             .withNano(999_999_999)
+    }
+
+    private fun calculateNotActivatedStatus(
+        createdAt: LocalDateTime,
+        currentTime: LocalDateTime
+    ): PrescriptionStatus {
+        val expirationTime = createdAt.plusWeeks(EXPIRATION_WEEKS)
+        return if (currentTime.isAfter(expirationTime)) {
+            PrescriptionStatus.EXPIRED
+        } else {
+            PrescriptionStatus.PENDING
+        }
     }
 }
