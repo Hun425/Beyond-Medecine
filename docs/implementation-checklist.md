@@ -3,27 +3,44 @@
 ## 프로젝트 개요
 - **목표**: TMJ 장애 DTx 서비스 백엔드 구현
 - **아키텍처**: FP + OOP 하이브리드 (핵심 계산은 FP, 경계는 OOP)
-- **기술스택**: Kotlin + Spring Boot (MVC + JPA) + Gradle + H2/MySQL
+- **기술스택**:
+  - Kotlin 2.1.0 (최신 안정 버전)
+  - Spring Boot 3.4.2 (2025년 1월 최신)
+  - Gradle (Kotlin DSL)
+  - H2 Database (dev/test)
+- **개발 방식**: TDD (Test-Driven Development)
 - **기한**: 5일 (120시간)
 
 ---
 
-## Phase 1: 프로젝트 초기 설정 ✅ 설계 완료
+## Phase 0: 프로젝트 초기 설정 ✅ 완료
 
-### 1.1 Gradle 프로젝트 구조
-- [ ] Spring Boot 3.x 프로젝트 생성
-- [ ] build.gradle.kts 의존성 설정
+### 0.1 Gradle 프로젝트 구조
+- [x] Spring Boot 3.4.2 프로젝트 생성
+- [x] build.gradle.kts 의존성 설정
   - Spring Boot Starter Web
   - Spring Boot Starter Data JPA
   - Spring Boot Starter Validation
   - H2 Database (runtime)
   - MySQL Connector (runtime, optional)
-  - Kotlin stdlib, reflect
-  - JUnit 5, Mockito-Kotlin
-- [ ] application.yml 설정 (profile: dev, test)
-- [ ] application-test.yml 설정 (H2 in-memory)
+  - Kotlin 2.1.0, reflect, stdlib
+  - JUnit 5, Mockito-Kotlin 5.4.0, Kotest 5.9.1
+- [x] settings.gradle.kts 생성
+- [x] gradle.properties 생성
+- [x] application.yml 설정 (H2, JPA, 로깅)
+- [x] application-test.yml 설정 (H2 in-memory)
 
-### 1.2 패키지 구조 생성
+### 0.2 패키지 구조 생성
+- [x] 메인 소스 디렉토리 생성
+  - domain/ (model, calculator, exception)
+  - application/ (service, repository, dto)
+  - presentation/ (controller, dto, exception)
+- [x] 테스트 소스 디렉토리 생성
+  - domain/calculator/
+  - application/service/
+  - application/repository/
+  - presentation/controller/
+
 ```
 src/main/kotlin/com/beyondmedicine/
 ├── domain/
@@ -34,12 +51,9 @@ src/main/kotlin/com/beyondmedicine/
 │   ├── service/            # Service Layer (OOP boundary)
 │   ├── repository/         # Spring Data JPA
 │   └── dto/                # Internal DTOs
-├── presentation/
-│   ├── controller/         # REST Controllers
-│   ├── dto/                # API Request/Response DTOs
-│   ├── mapper/             # DTO Mappers
-│   └── validator/          # Custom Validators
-└── infrastructure/
+└── presentation/
+    ├── controller/         # REST Controllers
+    ├── dto/                # API Request/Response DTOs
     └── exception/          # GlobalExceptionHandler
 
 src/test/kotlin/com/beyondmedicine/
@@ -49,9 +63,24 @@ src/test/kotlin/com/beyondmedicine/
 └── presentation/controller/ # API Tests (MockMvc)
 ```
 
+### 0.3 Application 클래스 및 설정
+- [x] BeyondMedicineApplication.kt 생성
+- [x] application.yml 설정 (H2, JPA, Logging)
+- [x] application-test.yml 설정
+
+### 0.4 첫 번째 스모크 테스트
+- [x] BeyondMedicineApplicationTest.kt 작성
+- [x] contextLoads() 테스트 통과
+
+**커밋**: `6218d9b` - chore: setup Spring Boot project with Gradle
+
 ---
 
-## Phase 2: Domain Layer - Pure Functions (FP) ✅ 설계 완료
+---
+
+## Phase 1: Domain Calculator (순수 함수) - TDD 🔴🟢🔵
+
+> **TDD 방식**: Red (테스트 작성) → Green (구현) → Refactor (개선) → Docs (문서화)
 
 ### 2.1 Calculator 구현 (순수 함수)
 
