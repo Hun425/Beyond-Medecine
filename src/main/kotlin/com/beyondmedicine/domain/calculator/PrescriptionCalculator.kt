@@ -10,7 +10,11 @@ object PrescriptionCalculator {
         activatedAt: LocalDateTime?,
         currentTime: LocalDateTime
     ): PrescriptionStatus {
-        // 최소 구현: 항상 PENDING 반환
-        return PrescriptionStatus.PENDING
+        // activatedAt이 있으면 ACTIVE, 없으면 PENDING
+        return if (activatedAt != null) {
+            PrescriptionStatus.ACTIVE
+        } else {
+            PrescriptionStatus.PENDING
+        }
     }
 }
