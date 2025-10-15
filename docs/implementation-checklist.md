@@ -78,21 +78,42 @@ src/test/kotlin/com/beyondmedicine/
 
 ---
 
-## Phase 1: Domain Calculator (순수 함수) - TDD 🔴🟢🔵
+## Phase 1: Domain Calculator (순수 함수) - TDD 🔴🟢🔵 (진행 중)
 
 > **TDD 방식**: Red (테스트 작성) → Green (구현) → Refactor (개선) → Docs (문서화)
 
-### 2.1 Calculator 구현 (순수 함수)
+### 1.1 PrescriptionCalculator 구현 (진행 중)
 
-#### PrescriptionCalculator.kt
-- [ ] `calculateStatus()` 구현
-  - PENDING: activatedAt == null
-  - ACTIVE: D+0 ~ D+41 23:59:59.999
-  - COMPLETED: D+42 00:00:00 ~
-  - EXPIRED: 활성화 없이 D+7 경과
-- [ ] `calculateActivatedStatus()` private 함수
-- [ ] `calculateNotActivatedStatus()` private 함수
-- [ ] 상수: MAX_ACTIVE_DAYS = 41, EXPIRATION_DAYS = 7
+#### 완료된 Iteration
+- [x] **Iteration 1.1**: PENDING 상태 (커밋: `f80ab4b`, `bb62bab`)
+  - 🔴 RED: 테스트 추가
+  - 🟢 GREEN: 하드코딩 구현
+
+- [x] **Iteration 1.2**: ACTIVE 상태 (커밋: `b69503e`, `a01abc5`)
+  - 🔴 RED: ACTIVE 테스트 추가
+  - 🟢 GREEN: activatedAt 체크 로직
+
+- [x] **Iteration 1.3**: COMPLETED 상태 + 경계값 (커밋: `52c453d`, `29f20fb`, `dc19e94`)
+  - 🔴 RED: D+41/D+42 경계값 테스트
+  - 🟢 GREEN: 날짜 계산 로직 구현
+  - 🔵 REFACTOR: 함수 분리 (calculateActivatedStatus, calculateEndOfActiveWeek)
+
+#### 구현된 코드
+```kotlin
+object PrescriptionCalculator {
+    private const val ACTIVE_PERIOD_DAYS = 42L
+
+    fun calculateStatus(...)  // ✅ when 표현식
+    private fun calculateActivatedStatus(...)  // ✅ ACTIVE/COMPLETED 판단
+    private fun calculateEndOfActiveWeek(...)  // ✅ D+41 23:59:59.999 계산
+}
+```
+
+#### 다음 Iteration
+- [ ] **Iteration 1.4**: EXPIRED 상태
+  - EXPIRED: 활성화 없이 6주 경과
+  - `calculateNotActivatedStatus()` private 함수
+  - 상수: EXPIRATION_WEEKS = 6L
 
 #### WeekCalculator.kt
 - [ ] `calculateWeekNumber()` 구현
