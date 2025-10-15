@@ -42,4 +42,38 @@ class PrescriptionCalculatorTest {
         // then
         assertEquals(PrescriptionStatus.ACTIVE, status)
     }
+
+    @Test
+    @DisplayName("활성화 후 D+41 23:59:59까지는 ACTIVE 상태다 (경계값)")
+    fun calculateStatus_EndOfActiveWeek_ReturnsActive() {
+        // given
+        val createdAt = LocalDateTime.of(2025, 9, 1, 10, 0)
+        val activatedAt = LocalDateTime.of(2025, 10, 1, 9, 0)
+        val currentTime = LocalDateTime.of(2025, 11, 11, 23, 59, 59, 999_999_999)  // D+41 끝
+
+        // when
+        val status = PrescriptionCalculator.calculateStatus(
+            createdAt, activatedAt, currentTime
+        )
+
+        // then
+        assertEquals(PrescriptionStatus.ACTIVE, status)
+    }
+
+    @Test
+    @DisplayName("활성화 후 D+42 00:00:00부터는 COMPLETED 상태다 (경계값)")
+    fun calculateStatus_StartOfCompletedWeek_ReturnsCompleted() {
+        // given
+        val createdAt = LocalDateTime.of(2025, 9, 1, 10, 0)
+        val activatedAt = LocalDateTime.of(2025, 10, 1, 9, 0)
+        val currentTime = LocalDateTime.of(2025, 11, 12, 0, 0, 0)  // D+42 시작
+
+        // when
+        val status = PrescriptionCalculator.calculateStatus(
+            createdAt, activatedAt, currentTime
+        )
+
+        // then
+        assertEquals(PrescriptionStatus.COMPLETED, status)
+    }
 }
