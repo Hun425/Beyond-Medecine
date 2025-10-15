@@ -11,22 +11,30 @@ object PrescriptionCalculator {
         createdAt: LocalDateTime,
         activatedAt: LocalDateTime?,
         currentTime: LocalDateTime
+    ): PrescriptionStatus = when {
+        activatedAt != null -> calculateActivatedStatus(activatedAt, currentTime)
+        else -> PrescriptionStatus.PENDING
+    }
+
+    private fun calculateActivatedStatus(
+        activatedAt: LocalDateTime,
+        currentTime: LocalDateTime
     ): PrescriptionStatus {
-        if (activatedAt != null) {
-            val endOfActiveWeek = activatedAt
-                .plusDays(ACTIVE_PERIOD_DAYS - 1)
-                .withHour(23)
-                .withMinute(59)
-                .withSecond(59)
-                .withNano(999_999_999)
+        val endOfActiveWeek = calculateEndOfActiveWeek(activatedAt)
 
-            return if (currentTime.isAfter(endOfActiveWeek)) {
-                PrescriptionStatus.COMPLETED
-            } else {
-                PrescriptionStatus.ACTIVE
-            }
+        return if (currentTime.isAfter(endOfActiveWeek)) {
+            PrescriptionStatus.COMPLETED
+        } else {
+            PrescriptionStatus.ACTIVE
         }
+    }
 
-        return PrescriptionStatus.PENDING
+    private fun calculateEndOfActiveWeek(activatedAt: LocalDateTime): LocalDateTime {
+        return activatedAt
+            .plusDays(ACTIVE_PERIOD_DAYS - 1)
+            .withHour(23)
+            .withMinute(59)
+            .withSecond(59)
+            .withNano(999_999_999)
     }
 }
