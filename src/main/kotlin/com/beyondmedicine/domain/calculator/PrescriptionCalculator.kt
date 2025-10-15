@@ -5,16 +5,28 @@ import java.time.LocalDateTime
 
 object PrescriptionCalculator {
 
+    private const val ACTIVE_PERIOD_DAYS = 42L
+
     fun calculateStatus(
         createdAt: LocalDateTime,
         activatedAt: LocalDateTime?,
         currentTime: LocalDateTime
     ): PrescriptionStatus {
-        // activatedAt이 있으면 ACTIVE, 없으면 PENDING
-        return if (activatedAt != null) {
-            PrescriptionStatus.ACTIVE
-        } else {
-            PrescriptionStatus.PENDING
+        if (activatedAt != null) {
+            val endOfActiveWeek = activatedAt
+                .plusDays(ACTIVE_PERIOD_DAYS - 1)
+                .withHour(23)
+                .withMinute(59)
+                .withSecond(59)
+                .withNano(999_999_999)
+
+            return if (currentTime.isAfter(endOfActiveWeek)) {
+                PrescriptionStatus.COMPLETED
+            } else {
+                PrescriptionStatus.ACTIVE
+            }
         }
+
+        return PrescriptionStatus.PENDING
     }
 }
