@@ -44,9 +44,11 @@ class AssessmentController(
         @RequestParam(name = "startWeek", required = false, defaultValue = "1") startWeek: Int,
         @RequestParam(name = "endWeek", required = false) endWeek: Int?
     ): ResponseEntity<WeeklyTrendResponse> {
-        // endWeek가 null이면 처방의 현재 주차를 사용
-        // TODO: 현재 주차 계산 로직 필요 (임시로 6으로 설정)
-        val finalEndWeek = endWeek ?: 6
+        // endWeek가 null이면 처방의 현재 주차를 계산
+        val finalEndWeek = endWeek ?: run {
+            // 처방의 현재 주차 계산 (최대 6주차)
+            assessmentService.getCurrentWeek(prescriptionCode) ?: 6
+        }
 
         val query = WeeklyTrendQuery(
             prescriptionCode = prescriptionCode,

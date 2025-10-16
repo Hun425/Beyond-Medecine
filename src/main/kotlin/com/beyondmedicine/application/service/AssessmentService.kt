@@ -83,6 +83,18 @@ class AssessmentService(
         )
     }
 
+    /**
+     * 처방의 현재 주차 조회
+     * - PDF 요구사항: endWeek가 null이면 현재 주차 사용
+     */
+    fun getCurrentWeek(prescriptionCode: String): Int? {
+        val prescription = prescriptionRepository.findByCode(prescriptionCode)
+            ?: return null
+
+        val today = java.time.LocalDate.now()
+        return prescription.calculateWeekNumber(today)?.coerceIn(1, 6)
+    }
+
     private fun validateScores(request: CreateDailyAssessmentRequest) {
         require(request.painScore in 0..10) {
             "통증 점수는 0~10 사이여야 합니다: ${request.painScore}"
