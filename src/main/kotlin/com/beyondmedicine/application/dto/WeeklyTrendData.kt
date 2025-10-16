@@ -29,6 +29,6 @@ data class WeeklyData(
  */
 data class TopPainAreaData(
     val location: PainLocation,
-    val count: Long,
+    val occurrenceCount: Long,
     val averageIntensity: Double
 )
