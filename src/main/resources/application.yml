@@ -8,10 +8,17 @@ spring:
     username: sa
     password:
 
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:data-init.sql
+      encoding: UTF-8
+
   jpa:
     hibernate:
       ddl-auto: create-drop
     show-sql: true
+    defer-datasource-initialization: true
     properties:
       hibernate:
         format_sql: true
