@@ -4,6 +4,7 @@ import com.beyondmedicine.application.dto.*
 import com.beyondmedicine.application.exception.PrescriptionNotFoundException
 import com.beyondmedicine.application.repository.DailyAssessmentRepository
 import com.beyondmedicine.application.repository.PrescriptionRepository
+import com.beyondmedicine.domain.calculator.ChangeRateCalculator
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -50,14 +51,39 @@ class AssessmentAnalysisService(
             )
         }
 
-        // 5. 주차별 데이터 변환
-        val weeklyTrends = weeklyAggregations.map { agg ->
+        // 5. 주차별 데이터 변환 (전주 대비 변화율 계산 포함)
+        val weeklyTrends = weeklyAggregations.mapIndexed { index, agg ->
+            // 변화율 계산: 첫 주차는 null, 이후 주차는 이전 데이터와 비교
+            val changeRates = if (index == 0) {
+                null  // 첫 주차는 비교 대상 없음
+            } else {
+                val previous = weeklyAggregations[index - 1]
+                ChangeRates(
+                    pain = ChangeRateCalculator.calculate(
+                        previous = previous.averagePainScore,
+                        current = agg.averagePainScore,
+                        isHigherBetter = false  // 통증: 낮을수록 좋음
+                    ),
+                    stress = ChangeRateCalculator.calculate(
+                        previous = previous.averageStressScore,
+                        current = agg.averageStressScore,
+                        isHigherBetter = false  // 스트레스: 낮을수록 좋음
+                    ),
+                    jawFunction = ChangeRateCalculator.calculate(
+                        previous = previous.averageJawFunctionScore,
+                        current = agg.averageJawFunctionScore,
+                        isHigherBetter = true  // 턱 기능: 높을수록 좋음
+                    )
+                )
+            }
+
             WeeklyData(
                 weekNumber = agg.weekNumber,
                 averagePainScore = agg.averagePainScore,
                 averageStressScore = agg.averageStressScore,
                 averageJawFunctionScore = agg.averageJawFunctionScore,
-                assessmentCount = agg.assessmentCount
+                assessmentCount = agg.assessmentCount,
+                changeRates = changeRates
             )
         }
 
