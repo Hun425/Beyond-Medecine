@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="PrescriptionCalculator 테스트" tests="5" skipped="0" failures="0" errors="0" timestamp="2025-10-16T00:46:33.110Z" hostname="Kiui-MacBookAir.local" time="0.002">
+  <properties/>
+  <testcase name="생성 후 활성화하지 않으면 PENDING 상태다" classname="com.beyondmedicine.domain.calculator.PrescriptionCalculatorTest" time="0.001"/>
+  <testcase name="활성화 후 42일 이내면 ACTIVE 상태다" classname="com.beyondmedicine.domain.calculator.PrescriptionCalculatorTest" time="0.0"/>
+  <testcase name="생성 후 6주 경과하고 활성화하지 않으면 EXPIRED 상태다" classname="com.beyondmedicine.domain.calculator.PrescriptionCalculatorTest" time="0.0"/>
+  <testcase name="활성화 후 D+42 00:00:00부터는 COMPLETED 상태다 (경계값)" classname="com.beyondmedicine.domain.calculator.PrescriptionCalculatorTest" time="0.0"/>
+  <testcase name="활성화 후 D+41 23:59:59까지는 ACTIVE 상태다 (경계값)" classname="com.beyondmedicine.domain.calculator.PrescriptionCalculatorTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
