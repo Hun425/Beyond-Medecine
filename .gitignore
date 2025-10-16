@@ -27,4 +27,6 @@ replay_pid*
 .kotlin/
 .idea
 docs/비욘드_메디슨_백엔드_개발자_채용_과제.pdf
-docs/faq.md
+docs/faq.
+.gradle
+build
