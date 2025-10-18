@@ -30,6 +30,9 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 
+    // Swagger/OpenAPI
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0")
+
     // Database
     runtimeOnly("com.h2database:h2")
     runtimeOnly("com.mysql:mysql-connector-j")
